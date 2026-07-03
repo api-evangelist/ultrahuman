@@ -1,0 +1,88 @@
+specification: FinOps Framework
+specificationVersion: '1.0'
+schema: https://www.finops.org/framework/
+provider: Ultrahuman
+providerId: ultrahuman
+created: '2026-07-03'
+modified: '2026-07-03'
+reconciled: false
+tags:
+- Wearables
+- Smart Ring
+- Health
+- CGM
+- FinOps
+- Cost Management
+- FOCUS
+description: >-
+  FinOps view of Ultrahuman spend. The Ultrahuman model is subscription-free at
+  the consumer layer: hardware is a one-time capital cost (Ring AIR ~USD 349,
+  Ring Pro separate) with lifelong data access and no recurring app fee, while
+  the optional M1 CGM patch is a recurring consumable. Developer/API spend is not
+  metered on a public price list - the Partner (UltraSignal) API and the
+  UltraSignal sensor developer kit are granted by application, with commercial
+  terms negotiated per partner. For a partner integrating the API, the dominant
+  ongoing costs are the partner's own infrastructure to store/process user
+  metrics and, where applicable, the M1 patch consumable borne by end users.
+notes: >-
+  No public per-call API pricing is published, so meters below reflect the
+  hardware/consumable model and negotiated partner terms rather than metered API
+  usage. Verify hardware prices and any partner fees with Ultrahuman during
+  reconciliation.
+sources:
+- https://www.ultrahuman.com/global/ring/buy/
+- https://www.ultrahuman.com/ultrasignal/
+- https://vision.ultrahuman.com/developer-docs
+- https://focus.finops.org/focus-specification/v1-3/
+alignedWith:
+  framework: FinOps Foundation Framework
+  frameworkUrl: https://www.finops.org/framework/
+  dataSpec: FOCUS
+  dataSpecVersion: '1.3'
+  dataSpecUrl: https://focus.finops.org/focus-specification/v1-3/
+publisherName: Ultrahuman
+serviceCategory: Health and Wearables
+billingModel:
+  pricingCategory: One-Time and Subscription-Free
+  billingFrequency: One-Time (hardware); Recurring (M1 consumable)
+  billingCurrency: USD
+  chargeCategories:
+  - Purchase
+  - Usage
+meters:
+- name: ring_hardware
+  description: One-time purchase of the Ring AIR / Ring Pro smart ring (capital cost, subscription-free).
+  unit: devices
+  aggregation: sum
+  dimensions:
+  - account
+- name: m1_cgm_patch
+  description: Recurring M1 CGM biosensor patch consumable, borne by end users who enable glucose.
+  unit: patches
+  aggregation: sum
+  dimensions:
+  - account
+- name: partner_api_contract
+  description: Negotiated partner commercial terms for Partner API / UltraSignal access (not publicly priced).
+  unit: contract
+  aggregation: sum
+  dimensions:
+  - partner
+- name: partner_infrastructure
+  description: The partner's own compute/storage to ingest and process user metrics (no Ultrahuman invoice).
+  unit: hours
+  aggregation: sum
+  dimensions:
+  - deployment
+principles:
+- name: Visibility
+  description: Track hardware capital spend and M1 patch consumables separately from any negotiated partner API terms; monitor partner-side infrastructure for metric ingestion.
+- name: Allocation
+  description: Map partner integrations and end-user cohorts to internal cost centers; attribute CGM consumable cost to metabolic-health use cases.
+- name: Optimization
+  description: Request only needed scopes to limit data handled; poll daily rather than continuously; self-host metric storage/processing to control partner-side cost.
+- name: Accountability
+  description: Assign an owner for the Ultrahuman partnership; review hardware, consumable, and infrastructure spend against the value of the integrated metrics.
+maintainers:
+- FN: Kin Lane
+  email: kin@apievangelist.com

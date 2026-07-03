@@ -1,0 +1,128 @@
+specification: API Commons Plans
+specificationVersion: '0.1'
+schema: https://raw.githubusercontent.com/api-evangelist/interface-research/main/schema/api-commons.yml#/$defs/Plans
+provider: Ultrahuman
+providerId: ultrahuman
+created: '2026-07-03'
+modified: '2026-07-03'
+reconciled: false
+tags:
+- Wearables
+- Smart Ring
+- Health
+- CGM
+- Plans
+description: >-
+  Ultrahuman's consumer model is subscription-free hardware: the Ring AIR is a
+  one-time purchase (USD 349 at review time) that includes lifelong access to the
+  ring and the user's own data with no recurring app fee; the Ring Pro and the M1
+  CGM patch are separate hardware purchases (the M1 patch is a recurring
+  consumable). Developer access is a separate, partner-gated program - the
+  Partner (UltraSignal) API and the UltraSignal sensor developer kit are granted
+  by application, not sold self-serve, and Ultrahuman does not publish a public
+  price list or usage tiers for API access. Commercial terms are negotiated
+  during partner onboarding.
+notes: >-
+  No public per-call or per-user pricing is published for the Partner API; the
+  plans below capture the subscription-free hardware model plus the
+  application-gated developer programs. Verify current hardware prices and any
+  partner commercial terms directly with Ultrahuman during reconciliation.
+sources:
+- https://www.ultrahuman.com/global/ring/buy/
+- https://www.ultrahuman.com/ultrasignal/
+- https://vision.ultrahuman.com/developer-docs
+- https://partnerships.ultrahuman.com/
+plans:
+- id: ultrahuman-ring-air
+  name: Ring AIR (Subscription-Free Hardware)
+  type: paid
+  description: >-
+    One-time purchase of the Ring AIR smart ring. Includes lifelong access to
+    the ring and the user's health data in the Ultrahuman app - no recurring
+    subscription. The user can grant a partner app access to their metrics via
+    OAuth from the app.
+  entries:
+  - label: Ring AIR Device
+    name: ring_air_device
+    type: flat
+    metric: device
+    limit: -1
+    timeFrame: lifetime
+    geo: global
+    unit: 1
+    price: USD 349 one-time (subscription-free; regional pricing varies)
+    userMultiplied: false
+  elements:
+  - name: Sleep, HRV, Heart Rate, Temperature, SpO2
+  - name: Movement and Recovery Indexes
+  - name: Lifelong Data Access (No Subscription)
+  - name: OAuth Data Sharing to Partner Apps
+- id: ultrahuman-m1-cgm
+  name: M1 CGM Patch (Metabolic Add-On)
+  type: paid
+  description: >-
+    Optional continuous glucose monitoring via the Ultrahuman M1 biosensor
+    patch, a recurring consumable. Unlocks glucose metrics (readings, average,
+    variability, estimated HbA1c, time-in-target) that partners can read with the
+    cgm_data scope.
+  entries:
+  - label: M1 CGM Patch
+    name: m1_cgm_patch
+    type: usage
+    metric: patch
+    limit: -1
+    timeFrame: month
+    geo: global
+    unit: 1
+    price: recurring consumable (regional pricing; see Ultrahuman)
+    userMultiplied: false
+  elements:
+  - name: Continuous Glucose Readings (~5-min cadence)
+  - name: Estimated HbA1c and Time-in-Target
+- id: ultrahuman-partner-api
+  name: Partner (UltraSignal) API Program
+  type: enterprise
+  description: >-
+    Application-gated access to the OAuth 2.0 Partner API for reading
+    user-consented ring and CGM metrics. Partners are issued client credentials
+    and a registered redirect URI during onboarding. No public price list is
+    published; commercial terms are negotiated per partner.
+  entries:
+  - label: Partner API Access
+    name: partner_api_access
+    type: flat
+    metric: contract
+    limit: -1
+    timeFrame: year
+    geo: global
+    unit: 1
+    price: not published (apply / contact Ultrahuman partnerships)
+    userMultiplied: false
+  elements:
+  - name: OAuth 2.0 Client Credentials
+  - name: ring_data, cgm_data, profile Scopes
+  - name: Daily Metrics and User Info Endpoints
+- id: ultrahuman-ultrasignal-devkit
+  name: UltraSignal Developer Kit
+  type: enterprise
+  description: >-
+    Application-gated access to raw Ring AIR sensor streams (PPG, temperature,
+    accelerometer) for building custom algorithms. Selected applicants receive a
+    loaned developer kit; priority to apps leveraging the ring's sensors.
+  entries:
+  - label: UltraSignal Dev Kit
+    name: ultrasignal_devkit
+    type: flat
+    metric: contract
+    limit: -1
+    timeFrame: year
+    geo: global
+    unit: 1
+    price: not published (apply for the developer program; loaned dev kit)
+    userMultiplied: false
+  elements:
+  - name: Raw PPG, Temperature, Accelerometer Streams
+  - name: Loaned Developer Kit
+maintainers:
+- FN: Kin Lane
+  email: kin@apievangelist.com

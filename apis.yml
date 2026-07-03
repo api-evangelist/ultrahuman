@@ -1,0 +1,153 @@
+aid: ultrahuman
+url: https://raw.githubusercontent.com/api-evangelist/ultrahuman/refs/heads/main/apis.yml
+name: Ultrahuman
+kind: company
+description: Ultrahuman makes the Ring AIR and Ring Pro smart rings and the M1 continuous
+  glucose monitor (CGM), a subscription-free metabolic-health wearable ecosystem. Its
+  Partner (UltraSignal) API lets approved partners read user-consented health metrics -
+  sleep, HRV, resting heart rate, skin temperature, SpO2, movement/recovery indexes,
+  VO2 max, and (with the M1 patch) continuous glucose - over an OAuth 2.0-secured REST
+  API. A separate UltraSignal developer program offers raw sensor streams (PPG,
+  temperature, accelerometer) from the Ring AIR via a loaned developer kit. API access
+  is not self-serve - partners apply and are onboarded with client credentials; end
+  users authorize data sharing from the Ultrahuman app.
+image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+tags:
+- Wearables
+- Smart Ring
+- Health
+- Metabolic Health
+- Sleep
+- HRV
+- Recovery
+- CGM
+- Glucose
+- Digital Health
+created: '2026-07-03'
+modified: '2026-07-03'
+specificationVersion: '0.19'
+apis:
+- aid: ultrahuman:ultrahuman-metrics-api
+  name: Ultrahuman Metrics API
+  tags:
+  - Metrics
+  - Ring Data
+  - Sleep
+  - HRV
+  - Recovery
+  - Temperature
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  humanURL: https://vision.ultrahuman.com/developer-docs
+  baseURL: https://partner.ultrahuman.com
+  properties:
+  - url: https://vision.ultrahuman.com/developer-docs
+    type: Documentation
+  - url: https://www.ultrahuman.com/blog/accessing-the-ultrahuman-partnership-api/
+    type: APIReference
+  - url: openapi/ultrahuman-openapi.yml
+    type: OpenAPI
+  - url: collections/ultrahuman.postman_collection.json
+    type: PostmanCollection
+  description: Reads user-consented Ring AIR / Ring Pro daily metrics via the ring_data
+    scope - sleep stages, duration, efficiency and sleep score, HRV (rMSSD), resting
+    and night heart rate, skin temperature deviation, SpO2, steps, movement index,
+    recovery index/score, metabolic score, and VO2 max. GET by date (YYYY-MM-DD) or by
+    a start/end epoch window (max 7 days). Endpoint paths are documented in the partner
+    developer docs; request/response shapes here are modeled from the docs.
+- aid: ultrahuman:ultrahuman-cgm-api
+  name: Ultrahuman CGM (Glucose) API
+  tags:
+  - CGM
+  - Glucose
+  - Metabolic
+  - HbA1c
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  humanURL: https://vision.ultrahuman.com/developer-docs
+  baseURL: https://partner.ultrahuman.com
+  properties:
+  - url: https://vision.ultrahuman.com/developer-docs
+    type: Documentation
+  - url: openapi/ultrahuman-openapi.yml
+    type: OpenAPI
+  description: Reads continuous glucose data via the cgm_data scope, for users with an
+    active Ultrahuman M1 CGM patch - individual readings (mg/dL, ~5-minute cadence),
+    average glucose, glucose variability, estimated HbA1c, and time-in-target-range
+    percentage. Surfaced through the same metrics endpoint, gated on the cgm_data
+    scope. Available only when a user has an active patch.
+- aid: ultrahuman:ultrahuman-user-info-api
+  name: Ultrahuman User Info API
+  tags:
+  - Users
+  - Profile
+  - Identity
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  humanURL: https://vision.ultrahuman.com/developer-docs?type=oauth
+  baseURL: https://partner.ultrahuman.com
+  properties:
+  - url: https://vision.ultrahuman.com/developer-docs?type=oauth
+    type: Documentation
+  - url: openapi/ultrahuman-openapi.yml
+    type: OpenAPI
+  description: Reads the authorized user's basic profile via the profile scope - user
+    ID, time zone, and similar account metadata used to correlate metric payloads to a
+    partner-linked user.
+- aid: ultrahuman:ultrahuman-oauth-api
+  name: Ultrahuman OAuth 2.0 API
+  tags:
+  - OAuth
+  - Authorization
+  - Tokens
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  humanURL: https://vision.ultrahuman.com/developer-docs?type=oauth
+  baseURL: https://partner.ultrahuman.com
+  properties:
+  - url: https://vision.ultrahuman.com/developer-docs?type=oauth
+    type: Documentation
+  - url: https://www.ultrahuman.com/blog/accessing-the-ultrahuman-partnership-api/
+    type: APIReference
+  - url: openapi/ultrahuman-openapi.yml
+    type: OpenAPI
+  description: OAuth 2.0 authorization for the Partner API - Authorization Code Grant
+    plus Refresh Token flow across the profile, ring_data, and cgm_data scopes. Users
+    consent from the Ultrahuman app; access tokens live ~1 day (86400s) and refresh
+    tokens rotate on each exchange. Includes authorize, token, and revoke endpoints.
+    Client ID/secret and a registered redirect URI are issued during partner
+    onboarding.
+- aid: ultrahuman:ultrahuman-ultrasignal-api
+  name: UltraSignal Sensor Platform API
+  tags:
+  - UltraSignal
+  - Sensors
+  - PPG
+  - Accelerometer
+  - Developer Platform
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  humanURL: https://www.ultrahuman.com/ultrasignal/
+  baseURL: https://partner.ultrahuman.com
+  properties:
+  - url: https://www.ultrahuman.com/ultrasignal/
+    type: Documentation
+  description: UltraSignal is Ultrahuman's wearable developer platform for building
+    custom algorithms on raw Ring AIR sensor streams - photoplethysmography (PPG),
+    temperature, and accelerometer data. Access is application-gated with a loaned
+    developer kit; priority goes to apps that leverage the ring's sensors. No public
+    endpoint contract is documented, so this API is listed for discovery without
+    modeled endpoints.
+common:
+- type: Website
+  url: https://www.ultrahuman.com
+- type: LinkedIn
+  url: https://www.linkedin.com/company/ultrahuman
+- type: Documentation
+  url: https://vision.ultrahuman.com/developer-docs
+- type: SignUp
+  url: https://partnerships.ultrahuman.com/
+- type: Plans
+  url: plans/ultrahuman-plans-pricing.yml
+- type: RateLimits
+  url: rate-limits/ultrahuman-rate-limits.yml
+- type: FinOps
+  url: finops/ultrahuman-finops.yml
+maintainers:
+- FN: Kin Lane
+  email: kin@apievangelist.com

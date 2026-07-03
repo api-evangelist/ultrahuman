@@ -1,0 +1,67 @@
+specification: API Commons Rate Limits
+specificationVersion: '0.1'
+schema: https://raw.githubusercontent.com/api-evangelist/interface-research/main/schema/api-commons.yml#/$defs/RateLimits
+provider: Ultrahuman
+providerId: ultrahuman
+created: '2026-07-03'
+modified: '2026-07-03'
+reconciled: false
+tags:
+- Wearables
+- Smart Ring
+- Health
+- CGM
+- Rate Limiting
+- Quotas
+description: >-
+  Ultrahuman does not publish fixed numeric rate limits for its Partner
+  (UltraSignal) API. The documented constraints are structural rather than
+  per-minute request caps: the daily metrics endpoint accepts either a single
+  date or a start_epoch/end_epoch window whose range may not exceed 7 days
+  (exceeding it returns 400), and metric data is inherently daily-cadence so
+  polling more often than once or a few times per day per user yields no new
+  data. Access tokens expire in ~86400 seconds (1 day) and must be refreshed,
+  and access is gated to onboarded partners, which bounds overall load.
+notes: >-
+  No documented per-account or per-endpoint numeric request-rate limit exists as
+  of the review date. Design clients to poll each user's daily metrics on a
+  low-frequency schedule (e.g. once per day after the user's day closes) and to
+  honor 429 / Retry-After if returned. Confirm any partner-specific quotas during
+  onboarding.
+sources:
+- https://vision.ultrahuman.com/developer-docs
+- https://vision.ultrahuman.com/developer-docs?type=oauth
+- https://www.ultrahuman.com/blog/accessing-the-ultrahuman-partnership-api/
+responseCodes:
+  throttled: 429
+limits:
+- name: Partner API Requests
+  scope: partner
+  metric: requests
+  limit: not published
+  notes: No fixed numeric request-rate limit is documented for the Partner API.
+- name: Epoch Query Window
+  scope: request
+  metric: days
+  limit: 7
+  notes: A start_epoch/end_epoch window may span at most 7 days; exceeding it returns 400.
+- name: Metric Cadence
+  scope: user
+  metric: records
+  limit: daily
+  notes: Ring/CGM metrics update on a daily (and intraday for glucose) cadence; polling more often adds no data.
+- name: Access Token Lifetime
+  scope: token
+  metric: seconds
+  limit: 86400
+  notes: Access tokens expire in ~1 day; use the rotating refresh token to obtain a new one.
+policies:
+- name: Least Privilege
+  description: Request only the scopes you need (profile, ring_data, cgm_data); Ultrahuman guidance emphasizes least-privilege scope requests.
+- name: Server-Side Token Exchange
+  description: Perform OAuth code and refresh-token exchanges server-side; refresh tokens rotate on each exchange.
+- name: Backoff Strategy
+  description: Poll on a low-frequency daily schedule per user and implement exponential backoff with jitter, honoring Retry-After on any 429 response.
+maintainers:
+- FN: Kin Lane
+  email: kin@apievangelist.com

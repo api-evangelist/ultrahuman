@@ -1,0 +1,153 @@
+{
+  "info": {
+    "name": "Ultrahuman Partner (UltraSignal) API",
+    "description": "OAuth 2.0-secured Partner API for reading user-consented Ultrahuman Ring AIR / Ring Pro and M1 CGM metrics. Base URL: https://partner.ultrahuman.com. Access is partner-gated (apply for client credentials); end users authorize from the Ultrahuman app. Endpoints are documented at vision.ultrahuman.com/developer-docs; request/response shapes in this collection are modeled from the docs (endpointsModeled).",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      { "key": "token", "value": "{{accessToken}}", "type": "string" }
+    ]
+  },
+  "variable": [
+    { "key": "baseUrl", "value": "https://partner.ultrahuman.com", "type": "string" },
+    { "key": "clientId", "value": "", "type": "string" },
+    { "key": "clientSecret", "value": "", "type": "string" },
+    { "key": "redirectUri", "value": "", "type": "string" },
+    { "key": "accessToken", "value": "", "type": "string" },
+    { "key": "refreshToken", "value": "", "type": "string" },
+    { "key": "date", "value": "2026-07-01", "type": "string" }
+  ],
+  "item": [
+    {
+      "name": "OAuth",
+      "item": [
+        {
+          "name": "Authorize (open in browser)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/authorize?response_type=code&client_id={{clientId}}&redirect_uri={{redirectUri}}&scope=profile ring_data cgm_data&state=xyz",
+              "host": ["{{baseUrl}}"],
+              "path": ["authorize"],
+              "query": [
+                { "key": "response_type", "value": "code" },
+                { "key": "client_id", "value": "{{clientId}}" },
+                { "key": "redirect_uri", "value": "{{redirectUri}}" },
+                { "key": "scope", "value": "profile ring_data cgm_data" },
+                { "key": "state", "value": "xyz" }
+              ]
+            },
+            "description": "Redirects the user to Ultrahuman to consent to the requested scopes and returns an authorization code to the registered redirect_uri."
+          }
+        },
+        {
+          "name": "Exchange code for token",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/x-www-form-urlencoded" }],
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                { "key": "grant_type", "value": "authorization_code" },
+                { "key": "code", "value": "" },
+                { "key": "client_id", "value": "{{clientId}}" },
+                { "key": "client_secret", "value": "{{clientSecret}}" },
+                { "key": "redirect_uri", "value": "{{redirectUri}}" }
+              ]
+            },
+            "url": { "raw": "{{baseUrl}}/api/partners/oauth/token", "host": ["{{baseUrl}}"], "path": ["api", "partners", "oauth", "token"] },
+            "description": "Exchanges an authorization code for an access token (~86400s) and a refresh token. Perform server-side."
+          }
+        },
+        {
+          "name": "Refresh access token",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/x-www-form-urlencoded" }],
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                { "key": "grant_type", "value": "refresh_token" },
+                { "key": "refresh_token", "value": "{{refreshToken}}" },
+                { "key": "client_id", "value": "{{clientId}}" },
+                { "key": "client_secret", "value": "{{clientSecret}}" }
+              ]
+            },
+            "url": { "raw": "{{baseUrl}}/api/partners/oauth/token", "host": ["{{baseUrl}}"], "path": ["api", "partners", "oauth", "token"] },
+            "description": "Exchanges a refresh token for a new access token. The refresh token rotates on each exchange."
+          }
+        },
+        {
+          "name": "Revoke token",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/x-www-form-urlencoded" }],
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                { "key": "token", "value": "{{accessToken}}" },
+                { "key": "client_id", "value": "{{clientId}}" },
+                { "key": "client_secret", "value": "{{clientSecret}}" }
+              ]
+            },
+            "url": { "raw": "{{baseUrl}}/api/partners/oauth/revoke", "host": ["{{baseUrl}}"], "path": ["api", "partners", "oauth", "revoke"] },
+            "description": "Revokes an access or refresh token."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Metrics",
+      "item": [
+        {
+          "name": "Get user metrics by date",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/partners/v1/user_data/metrics?date={{date}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "partners", "v1", "user_data", "metrics"],
+              "query": [{ "key": "date", "value": "{{date}}" }]
+            },
+            "description": "Returns consented daily ring metrics (and CGM metrics with the cgm_data scope) for the authorized user on the given YYYY-MM-DD date."
+          }
+        },
+        {
+          "name": "Get user metrics by epoch window",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/partners/v1/user_data/metrics?start_epoch=1782000000&end_epoch=1782518400",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "partners", "v1", "user_data", "metrics"],
+              "query": [
+                { "key": "start_epoch", "value": "1782000000" },
+                { "key": "end_epoch", "value": "1782518400" }
+              ]
+            },
+            "description": "Returns metrics for an epoch-seconds window (max 7-day range). Mutually exclusive with the date parameter."
+          }
+        }
+      ]
+    },
+    {
+      "name": "User",
+      "item": [
+        {
+          "name": "Get user info",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/api/partners/v1/user_data/user_info", "host": ["{{baseUrl}}"], "path": ["api", "partners", "v1", "user_data", "user_info"] },
+            "description": "Returns the authorized user's basic profile (id, timezone, etc.). Requires the profile scope."
+          }
+        }
+      ]
+    }
+  ]
+}

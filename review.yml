@@ -1,0 +1,102 @@
+aid: ultrahuman
+name: Ultrahuman
+review:
+  question: Does Ultrahuman expose a documented public WebSocket API?
+  answer: false
+  date: '2026-07-03'
+  reviewer: API Evangelist
+  asyncapiSpecCreated: false
+  asyncapiScopeNote: |
+    No AsyncAPI document was authored. Ultrahuman's Partner (UltraSignal) API is
+    a request/response REST API secured with OAuth 2.0. Data is retrieved by
+    polling the daily metrics endpoint for a date or a bounded epoch window;
+    there is no documented server-push transport (WebSocket or SSE) on
+    Ultrahuman's partner API, and no documented webhook callbacks either. The
+    separate UltraSignal developer platform exposes raw ring sensor streams (PPG,
+    temperature, accelerometer) via a loaned developer kit and SDK, not a public
+    web WebSocket endpoint, so there is nothing public to model in AsyncAPI.
+findings:
+  summary: |
+    Ultrahuman does NOT publish a documented public WebSocket API. Ultrahuman is
+    a smart-ring and metabolic-health wearable company (Ring AIR, Ring Pro, and
+    the M1 CGM patch). Its developer surface is a partner-gated REST API - the
+    Partner / UltraSignal API at base https://partner.ultrahuman.com - secured
+    with OAuth 2.0 (Authorization Code Grant plus Refresh Token flow) across the
+    profile, ring_data, and cgm_data scopes. Partners read user-consented daily
+    metrics by polling GET /api/partners/v1/user_data/metrics for a date or a
+    start/end epoch window (max 7 days); basic profile comes from
+    GET /api/partners/v1/user_data/user_info. All traffic is request/response
+    over HTTPS. No realtime, bidirectional, or streaming WebSocket (ws:// or
+    wss://) endpoint is documented, and no webhook/callback mechanism is
+    documented on the partner API.
+  accessModel: |
+    Access is NOT self-serve. Partners apply to the developer program (via the
+    partnerships channel / developer docs) and are onboarded with a Client ID,
+    Client Secret, and a registered redirect URI; applications for legitimate
+    health/wellness use cases process on the order of one to two weeks. End users
+    authorize data sharing from the Ultrahuman app (Profile -> Settings ->
+    Partner ID). A personal-token variant (GET /api/v1/partner/daily_metrics with
+    a personal Bearer token) lets an individual read their own ring data. The
+    UltraSignal sensor platform (raw PPG/temperature/accelerometer) is a separate
+    application-gated program with a loaned developer kit.
+  transports:
+    - protocol: REST
+      scheme: https
+      baseURL: https://partner.ultrahuman.com
+      documented: true
+      note: OAuth 2.0-secured partner API. Daily metrics + user info + OAuth token/revoke endpoints.
+    - protocol: OAuth 2.0
+      scheme: https
+      documented: true
+      note: Authorization Code Grant + Refresh Token flow; scopes profile, ring_data, cgm_data. Access token ~86400s.
+    - protocol: Webhook
+      scheme: https
+      documented: false
+      note: No webhook/callback delivery is documented on the partner API; data is pulled by polling.
+    - protocol: WebSocket
+      scheme: wss
+      documented: false
+      note: No WebSocket endpoint is documented anywhere in Ultrahuman's partner developer docs as of the review date.
+  endpointsModeled: true
+  endpointsDocumented:
+    - GET    https://partner.ultrahuman.com/authorize
+    - POST   https://partner.ultrahuman.com/api/partners/oauth/token
+    - POST   https://partner.ultrahuman.com/api/partners/oauth/revoke
+    - GET    https://partner.ultrahuman.com/api/partners/v1/user_data/metrics
+    - GET    https://partner.ultrahuman.com/api/partners/v1/user_data/user_info
+    - GET    https://partner.ultrahuman.com/api/v1/partner/daily_metrics
+  metricFamilies:
+    - Cardiovascular - heart rate, HRV (rMSSD), night resting heart rate, sleep HRV, SpO2
+    - Sleep - duration, efficiency, REM/deep/light stages, sleep score, temperature deviation, HR drop
+    - Activity/Recovery - steps, active minutes, movement index, recovery index/score, metabolic score, VO2 max
+    - Temperature - skin temperature (Celsius), average body temperature during sleep
+    - Glucose/CGM - readings (mg/dL ~5-min cadence), average, variability, estimated HbA1c, time-in-target
+sources:
+  - url: https://vision.ultrahuman.com/developer-docs
+    type: Documentation
+    note: UltraSignal / Partner API docs - daily metrics endpoint, query params, metric families. REST only.
+  - url: https://vision.ultrahuman.com/developer-docs?type=oauth
+    type: Documentation
+    note: OAuth 2.0 authorize/token/revoke endpoints, scopes, token lifetimes. No WebSocket.
+  - url: https://www.ultrahuman.com/blog/accessing-the-ultrahuman-partnership-api/
+    type: Documentation
+    note: Access model - client credentials, redirect URI, scopes ring_data/cgm_data/profile, server-side token exchange.
+  - url: https://www.ultrahuman.com/ultrasignal/
+    type: Documentation
+    note: UltraSignal developer platform - raw PPG/temperature/accelerometer via loaned dev kit; application-gated.
+  - url: https://partnerships.ultrahuman.com/
+    type: Website
+    note: Partnerships channel / application front door.
+  - url: https://www.ultrahuman.com/global/ring/buy/
+    type: Pricing
+    note: Ring AIR one-time price (USD 349), subscription-free.
+actions:
+  asyncapiPath: null
+  apisYmlUpdated: true
+  reason: |
+    No WebSocket protocol surface exists. Ultrahuman's public developer surface
+    is a partner-gated, OAuth 2.0-secured REST API that is polled for daily
+    metrics; there is no server-push transport (WebSocket or SSE) and no
+    documented webhook, so no AsyncAPI document was created. The REST endpoints
+    are documented publicly but access is gated, so the OpenAPI is flagged
+    endpointsModeled.
