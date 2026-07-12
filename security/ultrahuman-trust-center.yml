@@ -1,0 +1,14 @@
+generated: '2026-07-11'
+method: searched
+probe: true
+source: https://www.ultrahuman.com/security/
+url: https://www.ultrahuman.com/security/
+certifications:
+- ISO 27001
+- HIPAA
+- GDPR
+evidence:
+- source: https://www.ultrahuman.com/security/
+  keywords:
+  - hipaa
+  - gdpr

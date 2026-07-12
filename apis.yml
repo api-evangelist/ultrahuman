@@ -134,6 +134,14 @@ apis:
     endpoint contract is documented, so this API is listed for discovery without
     modeled endpoints.
 common:
+- type: TrustCenter
+  url: security/ultrahuman-trust-center.yml
+- type: VulnerabilityDisclosure
+  url: security/ultrahuman-vulnerability-disclosure.yml
+- type: DomainSecurity
+  url: security/ultrahuman-domain-security.yml
+- type: Authentication
+  url: authentication/ultrahuman-authentication.yml
 - type: Website
   url: https://www.ultrahuman.com
 - type: LinkedIn
