@@ -134,6 +134,8 @@ apis:
     endpoint contract is documented, so this API is listed for discovery without
     modeled endpoints.
 common:
+- type: AgenticAccess
+  url: agentic-access/ultrahuman-agentic-access.yml
 - type: TrustCenter
   url: security/ultrahuman-trust-center.yml
 - type: VulnerabilityDisclosure
