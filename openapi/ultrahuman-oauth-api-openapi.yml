@@ -1,0 +1,167 @@
+openapi: 3.0.3
+info:
+  title: Ultrahuman Partner (UltraSignal) Metrics OAuth API
+  description: 'The Ultrahuman Partner API gives approved partners read access to user-consented health metrics from the Ultrahuman Ring AIR / Ring Pro and, for users with an active M1 patch, the Ultrahuman CGM. Access is secured with OAuth 2.0 (Authorization Code Grant plus Refresh Token flow) across three scopes: profile, ring_data, and cgm_data. Access is not self-serve - partners apply to the developer program and are issued a Client ID, Client Secret, and a registered redirect URI during onboarding; end users authorize data sharing from the Ultrahuman app (Profile -> Settings -> Partner ID). Access tokens expire in ~1 day (86400 seconds); refresh tokens rotate on each exchange.
+
+    IMPORTANT: This document is MODELED by API Evangelist from Ultrahuman''s public partner developer documentation. Endpoint paths, scopes, OAuth flows, query parameters, and the documented metric families are drawn from the docs; exact request/response schemas are approximations and should be verified against the live developer portal. Ultrahuman also documents a personal-token variant at GET /api/v1/partner/daily_metrics for a developer''s own ring data.'
+  version: '1.0'
+  contact:
+    name: Ultrahuman Partnerships
+    url: https://partnerships.ultrahuman.com/
+  x-endpointsModeled: true
+servers:
+- url: https://partner.ultrahuman.com
+  description: Ultrahuman Partner API
+tags:
+- name: OAuth
+  description: OAuth 2.0 authorization, token exchange, and revocation.
+paths:
+  /authorize:
+    get:
+      operationId: authorize
+      tags:
+      - OAuth
+      summary: Authorization endpoint (Authorization Code Grant)
+      description: Redirects the user to Ultrahuman to consent to the requested scopes. On approval, Ultrahuman redirects back to the registered redirect_uri with an authorization code.
+      parameters:
+      - name: response_type
+        in: query
+        required: true
+        schema:
+          type: string
+          enum:
+          - code
+      - name: client_id
+        in: query
+        required: true
+        schema:
+          type: string
+      - name: redirect_uri
+        in: query
+        required: true
+        schema:
+          type: string
+          format: uri
+      - name: scope
+        in: query
+        required: true
+        description: Space-delimited scopes - profile, ring_data, cgm_data.
+        schema:
+          type: string
+          example: profile ring_data cgm_data
+      - name: state
+        in: query
+        required: false
+        schema:
+          type: string
+      responses:
+        '302':
+          description: Redirect to redirect_uri with an authorization code (or an error).
+  /api/partners/oauth/token:
+    post:
+      operationId: token
+      tags:
+      - OAuth
+      summary: Token endpoint (code exchange and refresh)
+      description: Exchanges an authorization code for an access token, or exchanges a refresh token for a new access token. Perform token exchanges server-side. Refresh tokens rotate on each exchange.
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/TokenRequest'
+      responses:
+        '200':
+          description: A new access token (and rotated refresh token).
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TokenResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /api/partners/oauth/revoke:
+    post:
+      operationId: revoke
+      tags:
+      - OAuth
+      summary: Revoke a token
+      description: Revokes an access or refresh token.
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              required:
+              - token
+              - client_id
+              - client_secret
+              properties:
+                token:
+                  type: string
+                client_id:
+                  type: string
+                client_secret:
+                  type: string
+      responses:
+        '200':
+          description: Token revoked.
+        '400':
+          $ref: '#/components/responses/BadRequest'
+components:
+  responses:
+    BadRequest:
+      description: Invalid parameters, or the epoch window exceeded the 7-day limit.
+    Unauthorized:
+      description: Missing, invalid, or expired access token.
+  schemas:
+    TokenRequest:
+      type: object
+      required:
+      - grant_type
+      - client_id
+      - client_secret
+      properties:
+        grant_type:
+          type: string
+          enum:
+          - authorization_code
+          - refresh_token
+        client_id:
+          type: string
+        client_secret:
+          type: string
+        code:
+          type: string
+          description: Required for grant_type=authorization_code.
+        redirect_uri:
+          type: string
+          format: uri
+        refresh_token:
+          type: string
+          description: Required for grant_type=refresh_token.
+    TokenResponse:
+      type: object
+      properties:
+        access_token:
+          type: string
+        token_type:
+          type: string
+          example: Bearer
+        expires_in:
+          type: integer
+          example: 86400
+        refresh_token:
+          type: string
+        scope:
+          type: string
+        created_at:
+          type: integer
+          format: int64
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      description: OAuth 2.0 access token in the Authorization header.

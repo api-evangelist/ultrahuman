@@ -1,0 +1,58 @@
+openapi: 3.0.3
+info:
+  title: Ultrahuman Partner (UltraSignal) Metrics User API
+  description: 'The Ultrahuman Partner API gives approved partners read access to user-consented health metrics from the Ultrahuman Ring AIR / Ring Pro and, for users with an active M1 patch, the Ultrahuman CGM. Access is secured with OAuth 2.0 (Authorization Code Grant plus Refresh Token flow) across three scopes: profile, ring_data, and cgm_data. Access is not self-serve - partners apply to the developer program and are issued a Client ID, Client Secret, and a registered redirect URI during onboarding; end users authorize data sharing from the Ultrahuman app (Profile -> Settings -> Partner ID). Access tokens expire in ~1 day (86400 seconds); refresh tokens rotate on each exchange.
+
+    IMPORTANT: This document is MODELED by API Evangelist from Ultrahuman''s public partner developer documentation. Endpoint paths, scopes, OAuth flows, query parameters, and the documented metric families are drawn from the docs; exact request/response schemas are approximations and should be verified against the live developer portal. Ultrahuman also documents a personal-token variant at GET /api/v1/partner/daily_metrics for a developer''s own ring data.'
+  version: '1.0'
+  contact:
+    name: Ultrahuman Partnerships
+    url: https://partnerships.ultrahuman.com/
+  x-endpointsModeled: true
+servers:
+- url: https://partner.ultrahuman.com
+  description: Ultrahuman Partner API
+tags:
+- name: User
+  description: Basic authorized-user profile information.
+paths:
+  /api/partners/v1/user_data/user_info:
+    get:
+      operationId: getUserInfo
+      tags:
+      - User
+      summary: Get the authorized user's basic profile
+      description: Returns basic profile info (user ID, time zone, etc.) for the authorized user. Requires the profile scope.
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Basic user profile.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserInfo'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+components:
+  schemas:
+    UserInfo:
+      type: object
+      properties:
+        id:
+          type: string
+        timezone:
+          type: string
+          example: Asia/Kolkata
+  responses:
+    Unauthorized:
+      description: Missing, invalid, or expired access token.
+    NotFound:
+      description: User not found, or the partner lacks permission for the requested data.
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      description: OAuth 2.0 access token in the Authorization header.

@@ -1,0 +1,166 @@
+openapi: 3.0.3
+info:
+  title: Ultrahuman Partner (UltraSignal) Metrics API
+  description: 'The Ultrahuman Partner API gives approved partners read access to user-consented health metrics from the Ultrahuman Ring AIR / Ring Pro and, for users with an active M1 patch, the Ultrahuman CGM. Access is secured with OAuth 2.0 (Authorization Code Grant plus Refresh Token flow) across three scopes: profile, ring_data, and cgm_data. Access is not self-serve - partners apply to the developer program and are issued a Client ID, Client Secret, and a registered redirect URI during onboarding; end users authorize data sharing from the Ultrahuman app (Profile -> Settings -> Partner ID). Access tokens expire in ~1 day (86400 seconds); refresh tokens rotate on each exchange.
+
+    IMPORTANT: This document is MODELED by API Evangelist from Ultrahuman''s public partner developer documentation. Endpoint paths, scopes, OAuth flows, query parameters, and the documented metric families are drawn from the docs; exact request/response schemas are approximations and should be verified against the live developer portal. Ultrahuman also documents a personal-token variant at GET /api/v1/partner/daily_metrics for a developer''s own ring data.'
+  version: '1.0'
+  contact:
+    name: Ultrahuman Partnerships
+    url: https://partnerships.ultrahuman.com/
+  x-endpointsModeled: true
+servers:
+- url: https://partner.ultrahuman.com
+  description: Ultrahuman Partner API
+tags:
+- name: Metrics
+  description: Ring and CGM daily metrics for consented users.
+paths:
+  /api/partners/v1/user_data/metrics:
+    get:
+      operationId: getUserMetrics
+      tags:
+      - Metrics
+      summary: Get a user's daily health metrics
+      description: Returns consented daily metrics for the authorized user. Ring metrics require the ring_data scope; glucose/CGM metrics require the cgm_data scope and an active M1 patch. Query by a single date (YYYY-MM-DD) or by a start_epoch/end_epoch window (max range 7 days). date and the epoch pair are mutually exclusive.
+      security:
+      - bearerAuth: []
+      parameters:
+      - name: date
+        in: query
+        required: false
+        description: Target day in YYYY-MM-DD. Mutually exclusive with the epoch pair.
+        schema:
+          type: string
+          format: date
+      - name: start_epoch
+        in: query
+        required: false
+        description: Window start, epoch seconds. Use with end_epoch (max 7-day range).
+        schema:
+          type: integer
+          format: int64
+      - name: end_epoch
+        in: query
+        required: false
+        description: Window end, epoch seconds.
+        schema:
+          type: integer
+          format: int64
+      - name: email
+        in: query
+        required: false
+        description: Optional target user's email for authorized multi-user access.
+        schema:
+          type: string
+          format: email
+      responses:
+        '200':
+          description: The user's metrics for the requested period.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MetricsResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+components:
+  responses:
+    BadRequest:
+      description: Invalid parameters, or the epoch window exceeded the 7-day limit.
+    Unauthorized:
+      description: Missing, invalid, or expired access token.
+    NotFound:
+      description: User not found, or the partner lacks permission for the requested data.
+  schemas:
+    MetricsResponse:
+      type: object
+      description: Modeled envelope of daily metrics. The docs describe roughly 40+ metric fields spanning cardiovascular, sleep, glucose, activity/recovery, and temperature families; representative fields are shown here.
+      properties:
+        date:
+          type: string
+          format: date
+        cardiovascular:
+          type: object
+          properties:
+            heart_rate:
+              type: number
+            hrv_rmssd:
+              type: number
+            night_resting_heart_rate:
+              type: number
+            sleep_hrv:
+              type: number
+            spo2:
+              type: number
+        sleep:
+          type: object
+          properties:
+            total_duration_minutes:
+              type: number
+            efficiency:
+              type: number
+            rem_minutes:
+              type: number
+            deep_minutes:
+              type: number
+            light_minutes:
+              type: number
+            sleep_score:
+              type: number
+            temperature_deviation:
+              type: number
+        activity_recovery:
+          type: object
+          properties:
+            steps:
+              type: integer
+            active_minutes:
+              type: number
+            movement_index:
+              type: number
+            recovery_index:
+              type: number
+            recovery_score:
+              type: number
+            metabolic_score:
+              type: number
+            vo2_max:
+              type: number
+        temperature:
+          type: object
+          properties:
+            skin_temperature_celsius:
+              type: number
+            avg_body_temperature_sleep:
+              type: number
+        glucose:
+          type: object
+          description: Present only with the cgm_data scope and an active M1 patch.
+          properties:
+            readings:
+              type: array
+              items:
+                type: object
+                properties:
+                  epoch:
+                    type: integer
+                    format: int64
+                  value_mgdl:
+                    type: number
+            average_mgdl:
+              type: number
+            variability:
+              type: number
+            estimated_hba1c:
+              type: number
+            time_in_target_percent:
+              type: number
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      description: OAuth 2.0 access token in the Authorization header.
