@@ -1,0 +1,18 @@
+{
+  "provider": "ultrahuman",
+  "sources": [
+    "ultrahuman-metrics-api-openapi.yml",
+    "ultrahuman-oauth-api-openapi.yml",
+    "ultrahuman-user-api-openapi.yml"
+  ],
+  "outputs": [
+    "ultrahuman-metrics-api-openapi.yml",
+    "ultrahuman-oauth-api-openapi.yml",
+    "ultrahuman-user-api-openapi.yml"
+  ],
+  "archived": [],
+  "errors": [],
+  "warnings": [],
+  "notes": [],
+  "skipped": []
+}
