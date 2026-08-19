@@ -1,0 +1,59 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Ultrahuman Partner (UltraSignal) Metrics API",
+    "version": "1.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Metrics",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get a user's daily health metrics",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://partner.ultrahuman.com/api/partners/v1/user_data/metrics",
+            "params": [
+              {
+                "name": "date",
+                "value": "",
+                "type": "query",
+                "description": "Target day in YYYY-MM-DD. Mutually exclusive with the epoch pair."
+              },
+              {
+                "name": "start_epoch",
+                "value": "",
+                "type": "query",
+                "description": "Window start, epoch seconds. Use with end_epoch (max 7-day range)."
+              },
+              {
+                "name": "end_epoch",
+                "value": "",
+                "type": "query",
+                "description": "Window end, epoch seconds."
+              },
+              {
+                "name": "email",
+                "value": "",
+                "type": "query",
+                "description": "Optional target user's email for authorized multi-user access."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Returns consented daily metrics for the authorized user. Ring metrics require the ring_data scope; glucose/CGM metrics require the cgm_data scope and an active M1 patch. Query by a single date (YYYY-MM-DD) or by a start_epoch/end_epoch window (max range 7 days). date and the epoch pair are mutually exclusive."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

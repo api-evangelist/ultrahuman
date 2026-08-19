@@ -1,0 +1,348 @@
+{
+  "item": [
+    {
+      "id": "9ba8ea3e-a3d7-4d3d-941e-8cee52c32a06",
+      "name": "Metrics",
+      "description": {
+        "content": "Ring and CGM daily metrics for consented users.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "87fefa73-41d5-4969-9978-0ef1d03c6e13",
+          "name": "Get a user's daily health metrics",
+          "request": {
+            "name": "Get a user's daily health metrics",
+            "description": {
+              "content": "Returns consented daily metrics for the authorized user. Ring metrics require the ring_data scope; glucose/CGM metrics require the cgm_data scope and an active M1 patch. Query by a single date (YYYY-MM-DD) or by a start_epoch/end_epoch window (max range 7 days). date and the epoch pair are mutually exclusive.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "partners",
+                "v1",
+                "user_data",
+                "metrics"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "date",
+                  "value": "<date>",
+                  "description": "Target day in YYYY-MM-DD. Mutually exclusive with the epoch pair."
+                },
+                {
+                  "disabled": false,
+                  "key": "start_epoch",
+                  "value": "<long>",
+                  "description": "Window start, epoch seconds. Use with end_epoch (max 7-day range)."
+                },
+                {
+                  "disabled": false,
+                  "key": "end_epoch",
+                  "value": "<long>",
+                  "description": "Window end, epoch seconds."
+                },
+                {
+                  "disabled": false,
+                  "key": "email",
+                  "value": "<email>",
+                  "description": "Optional target user's email for authorized multi-user access."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "cfd33fe0-0194-49f3-bdb2-a16403cdc6ae",
+              "name": "The user's metrics for the requested period.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "partners",
+                    "v1",
+                    "user_data",
+                    "metrics"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "date",
+                      "value": "<date>"
+                    },
+                    {
+                      "key": "start_epoch",
+                      "value": "<long>"
+                    },
+                    {
+                      "key": "end_epoch",
+                      "value": "<long>"
+                    },
+                    {
+                      "key": "email",
+                      "value": "<email>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"date\": \"1996-12-30\",\n  \"cardiovascular\": {\n    \"heart_rate\": 5830.612322045981,\n    \"hrv_rmssd\": 3933.85282169463,\n    \"night_resting_heart_rate\": 9613.22294739156,\n    \"sleep_hrv\": 4341.169502278568,\n    \"spo2\": 6580.602788060498\n  },\n  \"sleep\": {\n    \"total_duration_minutes\": 4915.99178150789,\n    \"efficiency\": 3684.3061150932567,\n    \"rem_minutes\": 484.8321189263083,\n    \"deep_minutes\": 8850.27446599571,\n    \"light_minutes\": 521.7661424360398,\n    \"sleep_score\": 5486.310206502776,\n    \"temperature_deviation\": 698.1215489258341\n  },\n  \"activity_recovery\": {\n    \"steps\": 768,\n    \"active_minutes\": 675.2960546819486,\n    \"movement_index\": 4485.190066874866,\n    \"recovery_index\": 2960.25516372333,\n    \"recovery_score\": 2425.2659647789555,\n    \"metabolic_score\": 8117.636109863384,\n    \"vo2_max\": 822.2587742971255\n  },\n  \"temperature\": {\n    \"skin_temperature_celsius\": 4262.3584379944605,\n    \"avg_body_temperature_sleep\": 9621.38166913665\n  },\n  \"glucose\": {\n    \"readings\": [\n      {\n        \"epoch\": 6750,\n        \"value_mgdl\": 4462.39198271734\n      },\n      {\n        \"epoch\": 9167,\n        \"value_mgdl\": 8109.048102388911\n      }\n    ],\n    \"average_mgdl\": 5473.1718531207825,\n    \"variability\": 3715.5936595060903,\n    \"estimated_hba1c\": 1996.2512621274652,\n    \"time_in_target_percent\": 1819.7152270389904\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "a0b282a2-69d2-47a8-8ef8-b74691c69df2",
+              "name": "Invalid parameters, or the epoch window exceeded the 7-day limit.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "partners",
+                    "v1",
+                    "user_data",
+                    "metrics"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "date",
+                      "value": "<date>"
+                    },
+                    {
+                      "key": "start_epoch",
+                      "value": "<long>"
+                    },
+                    {
+                      "key": "end_epoch",
+                      "value": "<long>"
+                    },
+                    {
+                      "key": "email",
+                      "value": "<email>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "46cc77ec-b972-4b52-b76c-3d34f9758c8b",
+              "name": "Missing, invalid, or expired access token.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "partners",
+                    "v1",
+                    "user_data",
+                    "metrics"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "date",
+                      "value": "<date>"
+                    },
+                    {
+                      "key": "start_epoch",
+                      "value": "<long>"
+                    },
+                    {
+                      "key": "end_epoch",
+                      "value": "<long>"
+                    },
+                    {
+                      "key": "email",
+                      "value": "<email>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "655c0f2a-a29b-4a4e-90b4-604e6061c4d9",
+              "name": "User not found, or the partner lacks permission for the requested data.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "partners",
+                    "v1",
+                    "user_data",
+                    "metrics"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "date",
+                      "value": "<date>"
+                    },
+                    {
+                      "key": "start_epoch",
+                      "value": "<long>"
+                    },
+                    {
+                      "key": "end_epoch",
+                      "value": "<long>"
+                    },
+                    {
+                      "key": "email",
+                      "value": "<email>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://partner.ultrahuman.com",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "6f9a77c5-58ab-447f-b4cb-80e0ca214502",
+    "name": "Ultrahuman Partner (UltraSignal) Metrics API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "The Ultrahuman Partner API gives approved partners read access to user-consented health metrics from the Ultrahuman Ring AIR / Ring Pro and, for users with an active M1 patch, the Ultrahuman CGM. Access is secured with OAuth 2.0 (Authorization Code Grant plus Refresh Token flow) across three scopes: profile, ring_data, and cgm_data. Access is not self-serve - partners apply to the developer program and are issued a Client ID, Client Secret, and a registered redirect URI during onboarding; end users authorize data sharing from the Ultrahuman app (Profile -> Settings -> Partner ID). Access tokens expire in ~1 day (86400 seconds); refresh tokens rotate on each exchange.\nIMPORTANT: This document is MODELED by API Evangelist from Ultrahuman's public partner developer documentation. Endpoint paths, scopes, OAuth flows, query parameters, and the documented metric families are drawn from the docs; exact request/response schemas are approximations and should be verified against the live developer portal. Ultrahuman also documents a personal-token variant at GET /api/v1/partner/daily_metrics for a developer's own ring data.\n\nContact Support:\n Name: Ultrahuman Partnerships",
+      "type": "text/plain"
+    }
+  }
+}

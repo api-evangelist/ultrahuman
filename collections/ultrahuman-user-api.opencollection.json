@@ -1,0 +1,33 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Ultrahuman Partner (UltraSignal) Metrics User API",
+    "version": "1.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "User",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get the authorized user's basic profile",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://partner.ultrahuman.com/api/partners/v1/user_data/user_info",
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Returns basic profile info (user ID, time zone, etc.) for the authorized user. Requires the profile scope."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

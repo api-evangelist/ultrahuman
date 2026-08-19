@@ -1,0 +1,100 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Ultrahuman Partner (UltraSignal) Metrics OAuth API",
+    "version": "1.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "OAuth",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Authorization endpoint (Authorization Code Grant)",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://partner.ultrahuman.com/authorize",
+            "params": [
+              {
+                "name": "response_type",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "client_id",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "redirect_uri",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "scope",
+                "value": "",
+                "type": "query",
+                "description": "Space-delimited scopes - profile, ring_data, cgm_data."
+              },
+              {
+                "name": "state",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Redirects the user to Ultrahuman to consent to the requested scopes. On approval, Ultrahuman redirects back to the registered redirect_uri with an authorization code."
+        },
+        {
+          "info": {
+            "name": "Token endpoint (code exchange and refresh)",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://partner.ultrahuman.com/api/partners/oauth/token",
+            "body": {
+              "type": "form-urlencoded",
+              "data": []
+            }
+          },
+          "docs": "Exchanges an authorization code for an access token, or exchanges a refresh token for a new access token. Perform token exchanges server-side. Refresh tokens rotate on each exchange."
+        },
+        {
+          "info": {
+            "name": "Revoke a token",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://partner.ultrahuman.com/api/partners/oauth/revoke",
+            "body": {
+              "type": "form-urlencoded",
+              "data": [
+                {
+                  "name": "token",
+                  "value": ""
+                },
+                {
+                  "name": "client_id",
+                  "value": ""
+                },
+                {
+                  "name": "client_secret",
+                  "value": ""
+                }
+              ]
+            }
+          },
+          "docs": "Revokes an access or refresh token."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

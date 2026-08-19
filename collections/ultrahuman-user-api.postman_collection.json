@@ -1,0 +1,212 @@
+{
+  "item": [
+    {
+      "id": "59a097f5-6c2d-4e72-9dae-05fd2972b911",
+      "name": "User",
+      "description": {
+        "content": "Basic authorized-user profile information.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "95caee82-3e9c-4bca-84ee-2c12719718d3",
+          "name": "Get the authorized user's basic profile",
+          "request": {
+            "name": "Get the authorized user's basic profile",
+            "description": {
+              "content": "Returns basic profile info (user ID, time zone, etc.) for the authorized user. Requires the profile scope.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "partners",
+                "v1",
+                "user_data",
+                "user_info"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "cbd90b4b-6bbd-42c7-8dc1-f4ec133d525c",
+              "name": "Basic user profile.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "partners",
+                    "v1",
+                    "user_data",
+                    "user_info"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"string\",\n  \"timezone\": \"Asia/Kolkata\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "4a69ac06-cfd5-4b8b-afe7-9b33941578d0",
+              "name": "Missing, invalid, or expired access token.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "partners",
+                    "v1",
+                    "user_data",
+                    "user_info"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "ee049e04-55f4-45df-9681-9c1cadf478d6",
+              "name": "User not found, or the partner lacks permission for the requested data.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "partners",
+                    "v1",
+                    "user_data",
+                    "user_info"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://partner.ultrahuman.com",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "dd0c1245-be8e-4fd7-a53c-6cd901823a36",
+    "name": "Ultrahuman Partner (UltraSignal) Metrics User API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "The Ultrahuman Partner API gives approved partners read access to user-consented health metrics from the Ultrahuman Ring AIR / Ring Pro and, for users with an active M1 patch, the Ultrahuman CGM. Access is secured with OAuth 2.0 (Authorization Code Grant plus Refresh Token flow) across three scopes: profile, ring_data, and cgm_data. Access is not self-serve - partners apply to the developer program and are issued a Client ID, Client Secret, and a registered redirect URI during onboarding; end users authorize data sharing from the Ultrahuman app (Profile -> Settings -> Partner ID). Access tokens expire in ~1 day (86400 seconds); refresh tokens rotate on each exchange.\nIMPORTANT: This document is MODELED by API Evangelist from Ultrahuman's public partner developer documentation. Endpoint paths, scopes, OAuth flows, query parameters, and the documented metric families are drawn from the docs; exact request/response schemas are approximations and should be verified against the live developer portal. Ultrahuman also documents a personal-token variant at GET /api/v1/partner/daily_metrics for a developer's own ring data.\n\nContact Support:\n Name: Ultrahuman Partnerships",
+      "type": "text/plain"
+    }
+  }
+}
