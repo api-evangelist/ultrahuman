@@ -83,6 +83,8 @@ apis:
   humanURL: https://vision.ultrahuman.com/developer-docs
   baseURL: https://partner.ultrahuman.com
   tags:
+  - Authentication
+  tags_raw:
   - OAuth
   properties:
   - type: OpenAPI
