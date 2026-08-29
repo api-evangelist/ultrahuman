@@ -11,6 +11,18 @@ description: Ultrahuman makes the Ring AIR and Ring Pro smart rings and the M1 c
   temperature, accelerometer) from the Ring AIR via a loaned developer kit. API access
   is not self-serve - partners apply and are onboarded with client credentials; end
   users authorize data sharing from the Ultrahuman app.
+deliveryModel:
+  model: saas
+  open_source: false
+  commercial: true
+  callable_host: true
+  label: Hosted service · you call their endpoint
+  confidence: high
+  source:
+  - openapi
+  - pricing
+  generated: '2026-08-28'
+  method: derived
 accessModel:
   pricing: freemium
   onboarding: self-serve
