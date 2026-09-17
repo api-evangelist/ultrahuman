@@ -108,16 +108,16 @@ apis:
     url: collections/ultrahuman.postman_collection.json
   - type: Documentation
     url: https://vision.ultrahuman.com/developer-docs?type=oauth
-- aid: ultrahuman:ultrahuman-o-auth-api
+- aid: ultrahuman:ultrahuman-oauth-api
   name: Ultrahuman O Auth API
   description: OAuth 2.0 authorization, token exchange, and revocation.
   humanURL: https://www.ultrahuman.com/ultrasignal/
   baseURL: https://partner.ultrahuman.com
   tags:
-  - O Auth
+  - OAuth
   properties:
   - type: OpenAPI
-    url: openapi/ultrahuman-o-auth-api-openapi.yml
+    url: openapi/ultrahuman-oauth-api-openapi.yml
   - type: Documentation
     url: https://vision.ultrahuman.com/developer-docs
   - type: APIReference
