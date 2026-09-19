@@ -114,6 +114,8 @@ apis:
   humanURL: https://www.ultrahuman.com/ultrasignal/
   baseURL: https://partner.ultrahuman.com
   tags:
+  - Authentication
+  tags_raw:
   - OAuth
   properties:
   - type: OpenAPI
