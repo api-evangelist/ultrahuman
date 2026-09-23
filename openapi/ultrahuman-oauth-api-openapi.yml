@@ -1,9 +1,7 @@
-openapi: 3.0.3
+openapi: 3.2.0
 info:
-  title: Ultrahuman Partner (UltraSignal) Metrics OAuth API
-  description: 'The Ultrahuman Partner API gives approved partners read access to user-consented health metrics from the Ultrahuman Ring AIR / Ring Pro and, for users with an active M1 patch, the Ultrahuman CGM. Access is secured with OAuth 2.0 (Authorization Code Grant plus Refresh Token flow) across three scopes: profile, ring_data, and cgm_data. Access is not self-serve - partners apply to the developer program and are issued a Client ID, Client Secret, and a registered redirect URI during onboarding; end users authorize data sharing from the Ultrahuman app (Profile -> Settings -> Partner ID). Access tokens expire in ~1 day (86400 seconds); refresh tokens rotate on each exchange.
-
-    IMPORTANT: This document is MODELED by API Evangelist from Ultrahuman''s public partner developer documentation. Endpoint paths, scopes, OAuth flows, query parameters, and the documented metric families are drawn from the docs; exact request/response schemas are approximations and should be verified against the live developer portal. Ultrahuman also documents a personal-token variant at GET /api/v1/partner/daily_metrics for a developer''s own ring data.'
+  title: Ultrahuman Partner (UltraSignal) O Auth API
+  description: The Ultrahuman Partner API gives approved partners read access to user-consented health metrics from the Ultrahuman Ring AIR / Ring Pro and, for users with an active M1 patch, the Ultrahuman CGM.
   version: '1.0'
   contact:
     name: Ultrahuman Partnerships
@@ -112,11 +110,29 @@ paths:
           $ref: '#/components/responses/BadRequest'
 components:
   responses:
-    BadRequest:
-      description: Invalid parameters, or the epoch window exceeded the 7-day limit.
     Unauthorized:
       description: Missing, invalid, or expired access token.
+    BadRequest:
+      description: Invalid parameters, or the epoch window exceeded the 7-day limit.
   schemas:
+    TokenResponse:
+      type: object
+      properties:
+        access_token:
+          type: string
+        token_type:
+          type: string
+          example: Bearer
+        expires_in:
+          type: integer
+          example: 86400
+        refresh_token:
+          type: string
+        scope:
+          type: string
+        created_at:
+          type: integer
+          format: int64
     TokenRequest:
       type: object
       required:
@@ -142,24 +158,6 @@ components:
         refresh_token:
           type: string
           description: Required for grant_type=refresh_token.
-    TokenResponse:
-      type: object
-      properties:
-        access_token:
-          type: string
-        token_type:
-          type: string
-          example: Bearer
-        expires_in:
-          type: integer
-          example: 86400
-        refresh_token:
-          type: string
-        scope:
-          type: string
-        created_at:
-          type: integer
-          format: int64
   securitySchemes:
     bearerAuth:
       type: http
