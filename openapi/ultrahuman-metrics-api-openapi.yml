@@ -66,13 +66,6 @@ paths:
         '404':
           $ref: '#/components/responses/NotFound'
 components:
-  responses:
-    Unauthorized:
-      description: Missing, invalid, or expired access token.
-    BadRequest:
-      description: Invalid parameters, or the epoch window exceeded the 7-day limit.
-    NotFound:
-      description: User not found, or the partner lacks permission for the requested data.
   schemas:
     MetricsResponse:
       type: object
@@ -157,6 +150,13 @@ components:
               type: number
             time_in_target_percent:
               type: number
+  responses:
+    BadRequest:
+      description: Invalid parameters, or the epoch window exceeded the 7-day limit.
+    NotFound:
+      description: User not found, or the partner lacks permission for the requested data.
+    Unauthorized:
+      description: Missing, invalid, or expired access token.
   securitySchemes:
     bearerAuth:
       type: http

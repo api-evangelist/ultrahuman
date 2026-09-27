@@ -1,6 +1,6 @@
 openapi: 3.2.0
 info:
-  title: Ultrahuman Partner (UltraSignal) O Auth API
+  title: Ultrahuman Partner (UltraSignal) OAuth API
   description: The Ultrahuman Partner API gives approved partners read access to user-consented health metrics from the Ultrahuman Ring AIR / Ring Pro and, for users with an active M1 patch, the Ultrahuman CGM.
   version: '1.0'
   contact:
@@ -110,10 +110,10 @@ paths:
           $ref: '#/components/responses/BadRequest'
 components:
   responses:
-    Unauthorized:
-      description: Missing, invalid, or expired access token.
     BadRequest:
       description: Invalid parameters, or the epoch window exceeded the 7-day limit.
+    Unauthorized:
+      description: Missing, invalid, or expired access token.
   schemas:
     TokenResponse:
       type: object

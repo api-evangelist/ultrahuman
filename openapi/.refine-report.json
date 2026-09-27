@@ -8,20 +8,17 @@
     "ultrahuman-oauth-api-openapi.yml",
     "ultrahuman-user-api-openapi.yml"
   ],
-  "archived": [
-    "deleted 1 superseded output(s) from the previous generation"
-  ],
+  "archived": [],
   "errors": [],
   "warnings": [],
   "notes": [
     "sourced from openapi/_original/ (1 archived document(s)); previously refined output at the top level was skipped rather than re-split",
     "ultrahuman-openapi.yml: upgraded openapi 3.0.3 -> OpenAPI 3.2.0",
-    "superseded outputs removed: ultrahuman-o-auth-api-openapi.yml",
-    "apis.yml register: written (+1 apis, 4 total)"
+    "apis.yml register: already-registered"
   ],
   "skipped": [
     "ultrahuman-metrics-api-openapi.yml: previously refined output, superseded by openapi/_original/",
-    "ultrahuman-o-auth-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "ultrahuman-oauth-api-openapi.yml: previously refined output, superseded by openapi/_original/",
     "ultrahuman-user-api-openapi.yml: previously refined output, superseded by openapi/_original/"
   ]
 }
