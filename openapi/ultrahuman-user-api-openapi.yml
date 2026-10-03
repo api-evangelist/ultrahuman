@@ -35,6 +35,11 @@ paths:
         '404':
           $ref: '#/components/responses/NotFound'
 components:
+  responses:
+    Unauthorized:
+      description: Missing, invalid, or expired access token.
+    NotFound:
+      description: User not found, or the partner lacks permission for the requested data.
   schemas:
     UserInfo:
       type: object
@@ -44,11 +49,6 @@ components:
         timezone:
           type: string
           example: Asia/Kolkata
-  responses:
-    Unauthorized:
-      description: Missing, invalid, or expired access token.
-    NotFound:
-      description: User not found, or the partner lacks permission for the requested data.
   securitySchemes:
     bearerAuth:
       type: http
