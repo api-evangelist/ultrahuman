@@ -36,10 +36,10 @@ paths:
           $ref: '#/components/responses/NotFound'
 components:
   responses:
-    Unauthorized:
-      description: Missing, invalid, or expired access token.
     NotFound:
       description: User not found, or the partner lacks permission for the requested data.
+    Unauthorized:
+      description: Missing, invalid, or expired access token.
   schemas:
     UserInfo:
       type: object
