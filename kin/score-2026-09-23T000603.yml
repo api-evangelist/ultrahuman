@@ -1,31 +1,30 @@
-# Kin Score artifact — ultrahuman — 2026-08-30T203505
+# Kin Score artifact — ultrahuman — 2026-09-23T000603
 # The API Evangelist rating (https://github.com/api-evangelist/kin-score). Generated; do not edit.
 ---
 kin_score:
   slug: ultrahuman
-  schema_version: 0.17.2
-  scored_at: '2026-08-30'
-  run_ts: 2026-08-30T203505
-  composite: 44.0
+  schema_version: 0.22.0
+  scored_at: '2026-09-23'
+  run_ts: 2026-09-23T000603
+  composite: 42.7
   band: developing
   facets:
-    discoverability: 74.1
+    discoverability: 68.5
     contract_quality: 54.0
-    governance: 0.0
+    contract_governance: 0.0
     operational_transparency: 31.6
     developer_ergonomics: 33.3
-    commercial_clarity: 53.9
-    contract_governance: 0.0
     access_clarity: 53.9
   agent_readiness:
-    score: 19.8
-    band: agent-aware
+    score: 44.6
+    band: agent-ready
+    band_gated_from: agent-native
     dimensions:
       spec_presence: true
       agentic_access: derived
       reversibility_documented: false
-      mcp_server: false
-      auth_clarity: bearer
+      mcp_server: verified
+      auth_clarity: served
       idempotency: false
       error_semantics: false
       openapi_examples: false
@@ -36,9 +35,9 @@ kin_score:
       consent_identity: false
       agent_card: false
       dry_run_mode: false
-      delegated_identity: false
-      protected_resource_metadata: false
-      dynamic_client_registration: false
+      delegated_identity: served
+      protected_resource_metadata: verified
+      dynamic_client_registration: true
       agentic_commerce: false
   regulatory:
     applies: true
@@ -47,6 +46,7 @@ kin_score:
     score: 28.7
     matched_via: tags
   provenance:
+    mcp: first-party
     agentic_access: derived
     contracts:
       total: 3
