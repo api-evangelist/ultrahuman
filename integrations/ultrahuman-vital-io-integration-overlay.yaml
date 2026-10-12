@@ -1,0 +1,30 @@
+# DERIVED by build-integration-preconfigs.py (roadmap#949). Overlay on the PARTNER's contract:
+# where vital-io's enum names ultrahuman, and what that value is.
+overlay: 1.0.0
+info:
+  title: ultrahuman as a processor-connection in vital-io's contract
+  version: 1.0.0
+extends: https://raw.githubusercontent.com/api-evangelist/vital-io/refs/heads/main/openapi/vital-io-link-api-openapi.yml
+actions:
+- target: $.components.schemas.OAuthProviders
+  update:
+    x-apievangelist-integration:
+      values:
+        ultrahuman:
+          provider: ultrahuman
+          relationship: processor-connection
+          evidence: https://github.com/api-evangelist/vital-io/blob/main/openapi/vital-io-link-api-openapi.yml
+      method: derived
+      generated: '2026-10-12'
+      generator: build-integration-preconfigs.py
+- target: $.components.schemas.Providers
+  update:
+    x-apievangelist-integration:
+      values:
+        ultrahuman:
+          provider: ultrahuman
+          relationship: processor-connection
+          evidence: https://github.com/api-evangelist/vital-io/blob/main/openapi/vital-io-link-api-openapi.yml
+      method: derived
+      generated: '2026-10-12'
+      generator: build-integration-preconfigs.py

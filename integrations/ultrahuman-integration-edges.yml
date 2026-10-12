@@ -1,0 +1,19 @@
+edges:
+- partner_name: vital-io
+  partner: vital-io
+  partner_match: domain
+  type: contract
+  channel: partner-built
+  relationship: processor-connection
+  direction: partner-built
+  evidence: https://github.com/api-evangelist/vital-io/blob/main/openapi/vital-io-link-api-openapi.yml
+  contract_reference:
+    repo: vital-io
+    spec_file: vital-io-link-api-openapi.yml
+    value: ultrahuman
+    property: components.schemas.OAuthProviders
+    detected_by: detect-payment-method-edges.py
+    detected: '2026-10-12'
+generated: '2026-10-12'
+method: searched
+checked: []
