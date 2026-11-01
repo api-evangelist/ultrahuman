@@ -1,4 +1,4 @@
-# Ultrahuman (ultrahuman)
+# Ultrahuman
 
 <!-- API-EVANGELIST-PROVENANCE:BEGIN -->
 > ### About this repository
@@ -64,113 +64,131 @@
 > Full detail: **[Where this data comes from](https://apievangelist.com/about/where-our-data-comes-from)**
 <!-- API-EVANGELIST-PROVENANCE:END -->
 
-Ultrahuman makes the Ring AIR and Ring Pro smart rings and the M1 continuous glucose monitor (CGM) - a subscription-free metabolic-health wearable ecosystem. Its Partner (UltraSignal) API lets approved partners read user-consented health metrics - sleep, HRV, resting heart rate, skin temperature, SpO2, movement/recovery indexes, VO2 max, and (with the M1 patch) continuous glucose - over an OAuth 2.0-secured REST API. A separate UltraSignal developer program offers raw sensor streams (PPG, temperature, accelerometer) from the Ring AIR via a loaned developer kit.
+Ultrahuman makes the Ring AIR and Ring Pro smart rings and the M1 continuous glucose monitor (CGM), a subscription-free metabolic-health wearable ecosystem. Its Partner (UltraSignal) API lets approved partners read user-consented health metrics - sleep, HRV, resting heart rate, skin temperature, SpO2, movement/recovery indexes, VO2 max, and (with the M1 patch) continuous glucose - over an OAuth 2.0-secured REST API. A separate UltraSignal developer program offers raw sensor streams (PPG, temperature, accelerometer) from the Ring AIR via a loaned developer kit. API access is not self-serve - partners apply and are onboarded with client credentials; end users authorize data sharing from the Ultrahuman app.
 
-**APIs.json:** [https://raw.githubusercontent.com/api-evangelist/ultrahuman/refs/heads/main/apis.yml](https://raw.githubusercontent.com/api-evangelist/ultrahuman/refs/heads/main/apis.yml)
+**Areas:** Wearables · Smart Ring · Health · Metabolic Health · Sleep · HRV · Recovery · CGM · Glucose · Digital Health
 
-## Access Model
+## Ultrahuman on APIs.io
 
-Ultrahuman's API is **real and documented, but not self-serve**:
+Everything profiled for Ultrahuman is published on APIs.io rather than in this repository. Start at the provider page — **[apis.io/providers/ultrahuman/](https://apis.io/providers/ultrahuman/)** — or go straight to one of the APIs or properties below.
 
-- **Partner (UltraSignal) API** - OAuth 2.0 (Authorization Code Grant + Refresh Token flow) at base `https://partner.ultrahuman.com`, with the scopes `profile`, `ring_data`, and `cgm_data`. Partners **apply** to the developer program and are issued a Client ID, Client Secret, and a registered redirect URI during onboarding (applications for legitimate health/wellness use cases process on the order of one to two weeks). End users authorize data sharing from the Ultrahuman app (Profile → Settings → Partner ID). Access tokens live ~1 day (86400s) and refresh tokens rotate on each exchange.
-- **Personal token** - an individual can read their own ring data with a personal Bearer token via `GET /api/v1/partner/daily_metrics`.
-- **UltraSignal developer kit** - a separate, application-gated program granting raw Ring AIR sensor streams (PPG, temperature, accelerometer) with a loaned developer kit.
+### APIs (4)
 
-The OpenAPI in this repo is flagged **`x-endpointsModeled: true`**: endpoint paths, OAuth flows, scopes, query parameters, and the documented metric families come from Ultrahuman's public partner developer docs, but exact request/response schemas are modeled approximations and should be verified against the live portal.
+- [UltraSignal Sensor Platform API](https://apis.io/apis/ultrahuman/ultrahuman-ultrasignal-api/) — UltraSignal is Ultrahuman's wearable developer platform for building custom algorithms on raw Ring AIR sensor streams - photoplethysmography (PPG),…
+- [Ultrahuman Metrics API](https://apis.io/apis/ultrahuman/ultrahuman-metrics-api/) — Ring and CGM daily metrics for consented users.
+- [Ultrahuman User API](https://apis.io/apis/ultrahuman/ultrahuman-user-api/) — Basic authorized-user profile information.
+- [Ultrahuman O Auth API](https://apis.io/apis/ultrahuman/ultrahuman-oauth-api/) — OAuth 2.0 authorization, token exchange, and revocation.
 
-## Tags
+### Published properties
 
-- Wearables
-- Smart Ring
-- Health
-- Metabolic Health
-- Sleep
-- HRV
-- Recovery
-- CGM
-- Glucose
-- Digital Health
+Each property below is a page on APIs.io carrying the machine-readable artifact and what it says.
 
-## Timestamps
+#### MCP servers (1)
 
-- **Created:** 2026-07-03
-- **Modified:** 2026-07-03
+Model Context Protocol servers that expose the API to agents.
 
-## APIs
+- [ultrahuman](https://apis.io/servers/ultrahuman/ultrahuman/)
 
-### Ultrahuman Metrics API
+#### Agentic access (1)
 
-Reads user-consented Ring AIR / Ring Pro daily metrics via the `ring_data` scope - sleep stages, duration, efficiency and sleep score, HRV (rMSSD), resting and night heart rate, skin temperature deviation, SpO2, steps, movement index, recovery index/score, metabolic score, and VO2 max. `GET` by date (YYYY-MM-DD) or by a start/end epoch window (max 7 days).
+Which operations an agent can call, which act, and which need a human in the loop.
 
-- **Human URL:** [https://vision.ultrahuman.com/developer-docs](https://vision.ultrahuman.com/developer-docs)
-- **Base URL:** `https://partner.ultrahuman.com`
+- [Ultrahuman Agentic Access](https://apis.io/agentic-access/ultrahuman/ultrahuman-agentic-access/)
 
-#### Properties
+#### Collections (3)
 
-- [Documentation](https://vision.ultrahuman.com/developer-docs)
-- [API Reference](https://www.ultrahuman.com/blog/accessing-the-ultrahuman-partnership-api/)
-- [OpenAPI](openapi/ultrahuman-openapi.yml) — [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
-- [Postman Collection](collections/ultrahuman.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
+Postman and Open Collection request collections.
 
-### Ultrahuman CGM (Glucose) API
+- [Ultrahuman Partner (UltraSignal) Metrics API](https://apis.io/collections/ultrahuman/open-ultrahuman-metrics-api/)
+- [Ultrahuman Partner (UltraSignal) Metrics OAuth API](https://apis.io/collections/ultrahuman/open-ultrahuman-oauth-api/)
+- [Ultrahuman Partner (UltraSignal) Metrics User API](https://apis.io/collections/ultrahuman/open-ultrahuman-user-api/)
 
-Reads continuous glucose data via the `cgm_data` scope, for users with an active Ultrahuman M1 CGM patch - individual readings (mg/dL, ~5-minute cadence), average glucose, glucose variability, estimated HbA1c, and time-in-target-range percentage. Surfaced through the same metrics endpoint, gated on the `cgm_data` scope.
+#### Security (4)
 
-- **Human URL:** [https://vision.ultrahuman.com/developer-docs](https://vision.ultrahuman.com/developer-docs)
-- **Base URL:** `https://partner.ultrahuman.com`
+Authentication, trust centre, and vulnerability disclosure.
 
-#### Properties
+- [Ultrahuman Authentication](https://apis.io/security/ultrahuman/ultrahuman-authentication/)
+- [Ultrahuman Domain Security](https://apis.io/security/ultrahuman/ultrahuman-domain-security/)
+- [Ultrahuman Trust Center](https://apis.io/security/ultrahuman/ultrahuman-trust-center/)
+- [Ultrahuman Vulnerability Disclosure](https://apis.io/security/ultrahuman/ultrahuman-vulnerability-disclosure/)
 
-- [Documentation](https://vision.ultrahuman.com/developer-docs)
-- [OpenAPI](openapi/ultrahuman-openapi.yml) — [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
+#### Plans and pricing (1)
 
-### Ultrahuman User Info API
+Published plans, tiers and prices.
 
-Reads the authorized user's basic profile via the `profile` scope - user ID, time zone, and similar account metadata used to correlate metric payloads to a partner-linked user.
+- [Ultrahuman Plans Pricing](https://apis.io/plans/ultrahuman/ultrahuman-plans-pricing/)
 
-- **Human URL:** [https://vision.ultrahuman.com/developer-docs?type=oauth](https://vision.ultrahuman.com/developer-docs?type=oauth)
-- **Base URL:** `https://partner.ultrahuman.com`
+#### Rate limits (1)
 
-#### Properties
+Published request limits.
 
-- [Documentation](https://vision.ultrahuman.com/developer-docs?type=oauth)
-- [OpenAPI](openapi/ultrahuman-openapi.yml) — [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
+- [Ultrahuman Rate Limits](https://apis.io/rate-limits/ultrahuman/ultrahuman-rate-limits/)
 
-### Ultrahuman OAuth 2.0 API
+#### FinOps (1)
 
-OAuth 2.0 authorization for the Partner API - Authorization Code Grant plus Refresh Token flow across the `profile`, `ring_data`, and `cgm_data` scopes. Includes authorize, token, and revoke endpoints. Client ID/secret and a registered redirect URI are issued during partner onboarding.
+What the API costs to run, by operation.
 
-- **Human URL:** [https://vision.ultrahuman.com/developer-docs?type=oauth](https://vision.ultrahuman.com/developer-docs?type=oauth)
-- **Base URL:** `https://partner.ultrahuman.com`
+- [Ultrahuman Finops](https://apis.io/finops/ultrahuman/ultrahuman-finops/)
 
-#### Properties
+## Where to find this API
 
-- [Documentation](https://vision.ultrahuman.com/developer-docs?type=oauth)
-- [API Reference](https://www.ultrahuman.com/blog/accessing-the-ultrahuman-partnership-api/)
-- [OpenAPI](openapi/ultrahuman-openapi.yml) — [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
-
-### UltraSignal Sensor Platform API
-
-UltraSignal is Ultrahuman's wearable developer platform for building custom algorithms on raw Ring AIR sensor streams - photoplethysmography (PPG), temperature, and accelerometer data. Access is application-gated with a loaned developer kit. No public endpoint contract is documented, so this API is listed for discovery without modeled endpoints.
-
-- **Human URL:** [https://www.ultrahuman.com/ultrasignal/](https://www.ultrahuman.com/ultrasignal/)
-- **Base URL:** `https://partner.ultrahuman.com`
-
-#### Properties
-
-- [Documentation](https://www.ultrahuman.com/ultrasignal/)
-
-## Common Properties
+Links to the company's own pages. This repository publishes no copy of their specifications — the canonical document is theirs and lives at the URLs below.
 
 - [Website](https://www.ultrahuman.com)
-- [LinkedIn](https://www.linkedin.com/company/ultrahuman)
 - [Documentation](https://vision.ultrahuman.com/developer-docs)
-- [Sign Up](https://partnerships.ultrahuman.com/)
-- [Plans](plans/ultrahuman-plans-pricing.yml)
-- [Rate Limits](rate-limits/ultrahuman-rate-limits.yml)
-- [Fin Ops](finops/ultrahuman-finops.yml)
+- [Sign up](https://partnerships.ultrahuman.com/)
 
-## Maintainers
+## API Evangelist rating
 
-**FN:** Kin Lane
-**Email:** kin@apievangelist.com
+**Kin Score 32.0** — thin · rubric 0.25.0 · scored 2026-10-23
+
+| Facet | Score |
+|---|---|
+| Discoverability | 68.3 |
+| Contract quality | 48.6 |
+| Contract governance | 0.0 |
+| Operational transparency | 18.4 |
+| Developer ergonomics | 29.8 |
+| Access clarity | 22.4 |
+
+**Agent readiness 43.9** — agent-ready (gated down from agent-native)
+
+| Agent-readiness dimension | Result |
+|---|---|
+| Spec Presence | yes |
+| Agentic Access | derived (partial credit) |
+| Reversibility Documented | — |
+| MCP Server | verified |
+| Auth Clarity | served (partial credit) |
+| Idempotency | — |
+| Error Semantics | — |
+| OpenAPI Examples | — |
+| Rate Limit Signal | derived (partial credit) |
+| Event Surface Described | — |
+| Agent Skills | — |
+| Well Known Catalog | — |
+| Consent Identity | — |
+| Agent Card | — |
+| Dry Run Mode | — |
+| Delegated Identity | served (partial credit) |
+| Protected Resource Metadata | verified |
+| Dynamic Client Registration | yes |
+| Agentic Commerce | — |
+| Pagination Ratio | na |
+| Operation Distinctiveness | distinct |
+
+**Regulatory alignment 18.0** — Health
+
+The rubric is published at [github.com/api-evangelist/kin-score](https://github.com/api-evangelist/kin-score). The per-check breakdown behind these numbers — which checks were earned, partial or missed — along with score history and how this provider compares to its peers, is available at [apis.io/providers/ultrahuman/](https://apis.io/providers/ultrahuman/).
+
+## How this profile is made
+
+API Evangelist profiles a company's public API surface the way a developer would find it: the website, developer portal and documentation, the specifications it publishes, its public repositories, and its pricing, status and changelog pages. From that it derives the properties above — contracts split per API, workflows, schemas, collections, governance rules, plans and rate limits — and scores them against the published [Kin Score rubric](https://github.com/api-evangelist/kin-score).
+
+The artifacts are published on [APIs.io](https://apis.io), not in this repository. This repository is the public record for Ultrahuman: the place to say something is wrong, missing or out of date, and to ask for a re-score or a removal.
+
+## Open an issue
+
+- **Something about this listing** — a wrong description, a missing API, a stale artifact or a question about the rating: [open an issue on this repository](https://github.com/api-evangelist/ultrahuman/issues/new).
+- **A new API, or one that is not in the catalog yet** — [submit it on APIs.io](https://apis.io/add/).
+- **Anything else** — [the APIs.io inbox](https://github.com/api-search/inbox/issues/new) or [info@apievangelist.com](mailto:info@apievangelist.com).
